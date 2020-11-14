@@ -55,8 +55,8 @@ public class RecipeFoodID implements Serializable {
     @Override
     public String toString() {
         return "RecipeFoodID{" +
-                "recipe=" + recipe +
-                ", food=" + food +
+                "recipe=" + recipe.getName() +
+                ", food=" + food.toString() +
                 '}';
     }
 }

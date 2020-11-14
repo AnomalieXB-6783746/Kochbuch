@@ -3,7 +3,7 @@ package de.vilaca.Kochbuch.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "ingredients")
+@Table(name = "ingredient")
 @AssociationOverrides({
         @AssociationOverride(name = "primaryKey.recipe",
                 joinColumns = @JoinColumn(name = "recipe_id")),
@@ -17,36 +17,30 @@ public class Ingredient {
     /*@Column(name = "unit_id", nullable = false)
     private Integer unit_id;*/
 
-    @ManyToOne (targetEntity = Unit.class, fetch = FetchType.LAZY)
-    @JoinColumn (name = "unit_id")
+    //@JoinColumn (name = "unit_id")
+    @ManyToOne (/*targetEntity = Unit.class, */fetch = FetchType.LAZY)
+    @Column(name = "unit")
     private Unit unit;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    public Integer getUnit() {
-        return unit.getId();
-    }
-
-    public void setUnit(Unit unit) {
+    public Ingredient(RecipeFoodID primaryKey, Unit unit, Integer quantity) {
+        this.primaryKey = primaryKey;
         this.unit = unit;
+        this.quantity = quantity;
     }
 
-    /*public Unit getUnit() {
+    public Ingredient() {
+    }
+
+    public Unit getUnit() {
         return unit;
     }
 
     public void setUnit(Unit unit) {
         this.unit = unit;
-    }*/
-
-    /*public Integer getUnit_id() {
-        return unit_id;
     }
-
-    public void setUnit_id(Integer unit_id) {
-        this.unit_id = unit_id;
-    }*/
 
     @EmbeddedId
     public RecipeFoodID getPrimaryKey() {
@@ -90,7 +84,9 @@ public class Ingredient {
 
         Ingredient that = (Ingredient) o;
 
-        return primaryKey != null ? primaryKey.equals(that.primaryKey) : that.primaryKey == null;
+        return primaryKey != null
+                ? primaryKey.equals(that.primaryKey)
+                : that.primaryKey == null;
     }
 
     @Override
@@ -101,8 +97,8 @@ public class Ingredient {
     @Override
     public String toString() {
         return "Ingredient{" +
-                "primaryKey=" + primaryKey +
-                ", unit=" /*+ unit_id*/ +
+                "primaryKey=" + primaryKey.toString() +
+                ", unit=" + unit.toString() +
                 ", quantity=" + quantity +
                 '}';
     }

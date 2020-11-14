@@ -1,6 +1,7 @@
 package de.vilaca.Kochbuch.domain;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -29,6 +30,10 @@ public class Food {
 
     public void addIngredient(Ingredient ingredient) {
         this.ingredients.add(ingredient);
+    }
+
+    public void addIngredients(Collection<Ingredient> ingredients) {
+        this.ingredients.addAll(ingredients);
     }
 
     public Set<Ingredient> getIngredients() {

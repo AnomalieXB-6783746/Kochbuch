@@ -1,6 +1,7 @@
 package de.vilaca.Kochbuch.domain;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,12 +16,12 @@ public class Recipe {
 
     @Column(length = 20, nullable = false)
     private String name;
-
-    /**
+/*
+    *//**
      * The url to an image showing the meal.
-     */
+     *//*
     @Column(length = 50)
-    private String img_url;
+    private String img_url;*/
 
     /**
      * The url pointing to a JSON document containing the steps for this recipe.
@@ -87,14 +88,16 @@ public class Recipe {
     @OneToMany(mappedBy = "primaryKey.recipe")
     private Set<Ingredient> ingredients = new HashSet<>();
 
+    @ManyToOne(targetEntity = Image.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "image_id")
+    private Image image;
+
     public Recipe() {};
 
-    public Recipe(String name, String img_url, String steps_url, Boolean meat, Boolean fish,
+    public Recipe(String name, Image image, String steps_url, Set<Ingredient> ingredients, Boolean meat, Boolean fish,
                   Boolean vegetarian, Boolean vegan, Integer carbs, Integer protein,
-                  Integer calories, Integer portions, Set<MealType> mealTypes,
-                  Set<Ingredient> ingredients) {
+                  Integer calories, Integer portions) {
         this.name = name;
-        this.img_url = img_url;
         this.steps_url = steps_url;
         this.meat = meat;
         this.fish = fish;
@@ -104,15 +107,127 @@ public class Recipe {
         this.protein = protein;
         this.calories = calories;
         this.portions = portions;
-        this.mealTypes = mealTypes;
-        this.ingredients = ingredients;
+        this.image = image;
+        this.ingredients = (ingredients != null) ? ingredients : new HashSet<>();
     }
 
     public void addIngredient(Ingredient ingredient) {
         this.ingredients.add(ingredient);
     }
 
+    public void addIngredients(Collection<Ingredient> ingredients) {
+        this.ingredients.addAll(ingredients);
+    }
+
     public Set<Ingredient> getIngredients() {
         return ingredients;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSteps_url() {
+        return steps_url;
+    }
+
+    public void setSteps_url(String steps_url) {
+        this.steps_url = steps_url;
+    }
+
+    public Boolean getMeat() {
+        return meat;
+    }
+
+    public void setMeat(Boolean meat) {
+        this.meat = meat;
+    }
+
+    public Boolean getFish() {
+        return fish;
+    }
+
+    public void setFish(Boolean fish) {
+        this.fish = fish;
+    }
+
+    public Boolean getVegetarian() {
+        return vegetarian;
+    }
+
+    public void setVegetarian(Boolean vegetarian) {
+        this.vegetarian = vegetarian;
+    }
+
+    public Boolean getVegan() {
+        return vegan;
+    }
+
+    public void setVegan(Boolean vegan) {
+        this.vegan = vegan;
+    }
+
+    public Integer getCarbs() {
+        return carbs;
+    }
+
+    public void setCarbs(Integer carbs) {
+        this.carbs = carbs;
+    }
+
+    public Integer getProtein() {
+        return protein;
+    }
+
+    public void setProtein(Integer protein) {
+        this.protein = protein;
+    }
+
+    public Integer getCalories() {
+        return calories;
+    }
+
+    public void setCalories(Integer calories) {
+        this.calories = calories;
+    }
+
+    public Integer getPortions() {
+        return portions;
+    }
+
+    public void setPortions(Integer portions) {
+        this.portions = portions;
+    }
+
+    public Set<MealType> getMealTypes() {
+        return mealTypes;
+    }
+
+    public void setMealTypes(Set<MealType> mealTypes) {
+        this.mealTypes = mealTypes;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 }

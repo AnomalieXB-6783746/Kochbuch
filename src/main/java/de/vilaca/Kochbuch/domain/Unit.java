@@ -10,16 +10,16 @@ public class Unit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "unit_id")
+    @Column(name = "id")
     private Integer id;
 
     @Column(nullable = false, length = 10, unique = true, name = "name")
     private String name;
 
-    @OneToMany(targetEntity = Ingredient.class,
+    @OneToMany(/*targetEntity = Ingredient.class,*/
             mappedBy = "unit",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            orphanRemoval = true)
     private Set<Ingredient> ingredients = new HashSet<>();
 
     public Unit() {
@@ -35,6 +35,16 @@ public class Unit {
 
     public void setIngredients(Set<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public void addIngredient(Ingredient ingredient) {
+        ingredients.add(ingredient);
+        ingredient.setUnit(this);
+    }
+
+    public void removeIngredient(Ingredient ingredient) {
+        ingredients.remove(ingredient);
+        ingredient.setUnit(null);
     }
 
     public Integer getId() {
