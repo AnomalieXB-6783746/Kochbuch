@@ -7,14 +7,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "recipe")
+
 public class Recipe {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "recipe_id")
     private Integer id;
 
-    @Column(length = 20, nullable = false)
     private String name;
 /*
     *//**
@@ -26,70 +23,52 @@ public class Recipe {
     /**
      * The url pointing to a JSON document containing the steps for this recipe.
      */
-    @Column(length = 50, nullable = false)
     private String steps_url;
 
     /**
      * Whether the recipe contains meat or not.
      */
-    @Column(nullable = false)
     private Boolean meat;
 
     /**
      * Whether the recipe contains fish.
      */
-    @Column(nullable = false)
     private Boolean fish;
 
     /**
      * Whether the recipe is vegetarian (no meat or fish)
      */
-    @Column(nullable = false)
     private Boolean vegetarian;
 
     /**
      * Whether the recipe is vegan (no animal products)
      */
-    @Column(nullable = false)
     private Boolean vegan;
 
     /**
      * The amount of carbon hydrates this meal is worth.
      */
-    @Column(nullable = true)
     private Integer carbs;
 
     /**
      * The amount of protein this meal is worth.
      */
-    @Column(nullable = true)
     private Integer protein;
 
     /**
      * The amount of calories this meal is worth.
      */
-    @Column(nullable = true)
     private Integer calories;
 
     /**
      * The amount of portions this recipe is for.
      */
-    @Column(nullable = false)
     private Integer portions;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(
-            name = "recipe_meal",
-            joinColumns = {@JoinColumn(name = "recipe_id")},
-            inverseJoinColumns = {@JoinColumn(name = "meal_id")}
-    )
     private Set<MealType> mealTypes = new HashSet<>();
 
-    @OneToMany(mappedBy = "primaryKey.recipe")
     private Set<Ingredient> ingredients = new HashSet<>();
 
-    @ManyToOne(targetEntity = Image.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "image_id")
     private Image image;
 
     public Recipe() {};
@@ -119,10 +98,14 @@ public class Recipe {
         this.ingredients.addAll(ingredients);
     }
 
+    @OneToMany(mappedBy = "primaryKey.recipe")
     public Set<Ingredient> getIngredients() {
         return ingredients;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "recipe_id")
     public Integer getId() {
         return id;
     }
@@ -131,6 +114,7 @@ public class Recipe {
         this.id = id;
     }
 
+    @Column(length = 20, nullable = false)
     public String getName() {
         return name;
     }
@@ -139,6 +123,7 @@ public class Recipe {
         this.name = name;
     }
 
+    @Column(length = 50, nullable = false)
     public String getSteps_url() {
         return steps_url;
     }
@@ -147,6 +132,7 @@ public class Recipe {
         this.steps_url = steps_url;
     }
 
+    @Column(nullable = false)
     public Boolean getMeat() {
         return meat;
     }
@@ -155,6 +141,7 @@ public class Recipe {
         this.meat = meat;
     }
 
+    @Column(nullable = false)
     public Boolean getFish() {
         return fish;
     }
@@ -163,6 +150,7 @@ public class Recipe {
         this.fish = fish;
     }
 
+    @Column(nullable = false)
     public Boolean getVegetarian() {
         return vegetarian;
     }
@@ -171,6 +159,7 @@ public class Recipe {
         this.vegetarian = vegetarian;
     }
 
+    @Column(nullable = false)
     public Boolean getVegan() {
         return vegan;
     }
@@ -179,6 +168,7 @@ public class Recipe {
         this.vegan = vegan;
     }
 
+    @Column(nullable = true)
     public Integer getCarbs() {
         return carbs;
     }
@@ -187,6 +177,7 @@ public class Recipe {
         this.carbs = carbs;
     }
 
+    @Column(nullable = true)
     public Integer getProtein() {
         return protein;
     }
@@ -195,6 +186,7 @@ public class Recipe {
         this.protein = protein;
     }
 
+    @Column(nullable = true)
     public Integer getCalories() {
         return calories;
     }
@@ -203,6 +195,7 @@ public class Recipe {
         this.calories = calories;
     }
 
+    @Column(nullable = false)
     public Integer getPortions() {
         return portions;
     }
@@ -211,6 +204,12 @@ public class Recipe {
         this.portions = portions;
     }
 
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "recipe_meal",
+            joinColumns = {@JoinColumn(name = "recipe_id")},
+            inverseJoinColumns = {@JoinColumn(name = "meal_id")}
+    )
     public Set<MealType> getMealTypes() {
         return mealTypes;
     }
@@ -223,6 +222,8 @@ public class Recipe {
         this.ingredients = ingredients;
     }
 
+    @ManyToOne(targetEntity = Image.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "image_id")
     public Image getImage() {
         return image;
     }

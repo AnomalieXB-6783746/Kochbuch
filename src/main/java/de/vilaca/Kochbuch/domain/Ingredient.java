@@ -2,6 +2,9 @@ package de.vilaca.Kochbuch.domain;
 
 import javax.persistence.*;
 
+/**
+ * An ingredient as part of a meal.
+ */
 @Entity
 @Table(name = "ingredient")
 @AssociationOverrides({
@@ -18,11 +21,14 @@ public class Ingredient {
     private Integer unit_id;*/
 
     //@JoinColumn (name = "unit_id")
-    @ManyToOne (/*targetEntity = Unit.class, */fetch = FetchType.LAZY)
-    @Column(name = "unit")
+    /**
+     * The unit this ingredient is messured in.
+     */
     private Unit unit;
 
-    @Column(name = "quantity", nullable = false)
+    /**
+     * The quantity this ingredient represents.
+     */
     private Integer quantity;
 
     public Ingredient(RecipeFoodID primaryKey, Unit unit, Integer quantity) {
@@ -34,6 +40,7 @@ public class Ingredient {
     public Ingredient() {
     }
 
+    @ManyToOne (/*targetEntity = Unit.class, */fetch = FetchType.LAZY)
     public Unit getUnit() {
         return unit;
     }
@@ -69,6 +76,7 @@ public class Ingredient {
         this.getPrimaryKey().setFood(food);
     }
 
+    @Column(name = "quantity", nullable = false)
     public Integer getQuantity() {
         return quantity;
     }

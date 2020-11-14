@@ -6,19 +6,17 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * A type of food (a specific food). 
+ */
 @Entity
 @Table(name = "food")
 public class Food {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(nullable = false, length = 20)
     private String name;
 
-    @OneToMany(mappedBy = "primaryKey.food",
-            cascade = CascadeType.ALL)
     private Set<Ingredient> ingredients = new HashSet<Ingredient>();
 
     public Food() {
@@ -36,6 +34,8 @@ public class Food {
         this.ingredients.addAll(ingredients);
     }
 
+    @OneToMany(mappedBy = "primaryKey.food",
+            cascade = CascadeType.ALL)
     public Set<Ingredient> getIngredients() {
         return ingredients;
     }
@@ -44,6 +44,8 @@ public class Food {
         this.ingredients = ingredients;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {
         return id;
     }
@@ -52,6 +54,7 @@ public class Food {
         this.id = id;
     }
 
+    @Column(nullable = false, length = 20)
     public String getName() {
         return name;
     }

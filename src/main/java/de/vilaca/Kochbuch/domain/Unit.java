@@ -8,18 +8,10 @@ import java.util.Set;
 @Table(name = "unit")
 public class Unit {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private Integer id;
 
-    @Column(nullable = false, length = 10, unique = true, name = "name")
     private String name;
 
-    @OneToMany(/*targetEntity = Ingredient.class,*/
-            mappedBy = "unit",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
     private Set<Ingredient> ingredients = new HashSet<>();
 
     public Unit() {
@@ -29,6 +21,10 @@ public class Unit {
         this.name = name;
     }
 
+    @OneToMany(/*targetEntity = Ingredient.class,*/
+            mappedBy = "unit",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     public Set<Ingredient> getIngredients() {
         return ingredients;
     }
@@ -47,6 +43,9 @@ public class Unit {
         ingredient.setUnit(null);
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     public Integer getId() {
         return id;
     }
@@ -55,6 +54,7 @@ public class Unit {
         this.id = id;
     }
 
+    @Column(nullable = false, length = 10, unique = true, name = "name")
     public String getName() {
         return name;
     }

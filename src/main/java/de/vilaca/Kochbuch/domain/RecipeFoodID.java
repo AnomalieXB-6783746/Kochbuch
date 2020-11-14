@@ -5,7 +5,9 @@ import java.io.Serializable;
 
 @Embeddable
 public class RecipeFoodID implements Serializable {
+
     private Recipe recipe;
+
     private Food food;
 
     public RecipeFoodID() {

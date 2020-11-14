@@ -8,14 +8,10 @@ import java.util.Set;
 @Table(name = "mealType")
 public class MealType {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(nullable = false, length = 20)
     private String name;
 
-    @ManyToMany(mappedBy = "mealTypes")
     private Set<Recipe> recipes = new HashSet<>();
 
     public MealType() {
@@ -23,6 +19,34 @@ public class MealType {
 
     public MealType(String name) {
         this.name = name;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @Column(nullable = false, length = 20)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @ManyToMany(mappedBy = "mealTypes")
+    public Set<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(Set<Recipe> recipes) {
+        this.recipes = recipes;
     }
 
     @Override
