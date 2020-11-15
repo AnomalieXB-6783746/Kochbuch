@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header">
+    <meta charset="UTF-8">
+    <link>
+</head>
+<body>
+    <div id="navBar" th:fragment="navBar">
+        <ul>
+            <li><a th:href="${homePage}">Übersicht</a></li>
+            <li><a th:href="${newRecipePage}">Neues Rezept</a></li>
+        </ul>
+    </div>
+</body>
+</html>

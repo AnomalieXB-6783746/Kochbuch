@@ -38,14 +38,16 @@ public class ImageController {
             produces = MediaType.IMAGE_JPEG_VALUE)
     public void getImage(Model model, HttpServletResponse response,
                          @RequestParam(name = "id", required = true, defaultValue = "0") Integer id) throws IOException {
-        System.out.println(id);
+        //System.out.println(id);
         ApplicationHome home = new ApplicationHome(KochbuchApplication.class);
         Optional<Image> imageOptional = imageRepository.findById(id);
-        String subPath;
+        //String subPath;
         InputStream imageStream = null;
         File file = null;
         if (imageOptional.isPresent()) {
+            System.out.println("Hinterlegter Pfad:" + imageOptional.get().getPath());
             file = new File(home.getDir().getPath() + File.separator + imageOptional.get().getPath());
+            System.out.println("File: " + file.getAbsolutePath());
             if (file.exists()) {
                 imageStream = new FileInputStream(file);
             }

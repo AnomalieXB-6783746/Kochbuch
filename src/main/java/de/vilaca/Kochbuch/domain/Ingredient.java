@@ -1,88 +1,66 @@
 package de.vilaca.Kochbuch.domain;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * An ingredient as part of a meal.
+ * A type of food (a specific food). 
  */
 @Entity
 @Table(name = "ingredient")
-@AssociationOverrides({
-        @AssociationOverride(name = "primaryKey.recipe",
-                joinColumns = @JoinColumn(name = "recipe_id")),
-        @AssociationOverride(name = "primaryKey.food",
-                joinColumns = @JoinColumn(name = "food_id"))
-})
 public class Ingredient {
-    //composite id key
-    private RecipeFoodID primaryKey = new RecipeFoodID();
 
-    /*@Column(name = "unit_id", nullable = false)
-    private Integer unit_id;*/
+    private Integer id;
 
-    //@JoinColumn (name = "unit_id")
-    /**
-     * The unit this ingredient is messured in.
-     */
-    private Unit unit;
+    private String name;
 
-    /**
-     * The quantity this ingredient represents.
-     */
-    private Integer quantity;
-
-    public Ingredient(RecipeFoodID primaryKey, Unit unit, Integer quantity) {
-        this.primaryKey = primaryKey;
-        this.unit = unit;
-        this.quantity = quantity;
-    }
+    private Set<ConcreteIngredient> concreteIngredients = new HashSet<ConcreteIngredient>();
 
     public Ingredient() {
     }
 
-    @ManyToOne (/*targetEntity = Unit.class, */fetch = FetchType.LAZY)
-    public Unit getUnit() {
-        return unit;
+    public Ingredient(String name) {
+        this.name = name;
     }
 
-    public void setUnit(Unit unit) {
-        this.unit = unit;
+    public void addConcreteIngredient(ConcreteIngredient concreteIngredient) {
+        this.concreteIngredients.add(concreteIngredient);
     }
 
-    @EmbeddedId
-    public RecipeFoodID getPrimaryKey() {
-        return primaryKey;
+    public void addConcreteIngredients(Collection<ConcreteIngredient> concreteIngredients) {
+        this.concreteIngredients.addAll(concreteIngredients);
     }
 
-    public void setPrimaryKey(RecipeFoodID primaryKey) {
-        this.primaryKey = primaryKey;
+    @OneToMany(mappedBy = "primaryKey.food",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    public Set<ConcreteIngredient> getConcreteIngredients() {
+        return concreteIngredients;
     }
 
-    @Transient
-    public Recipe getRecipe() {
-        return getPrimaryKey().getRecipe();
+    public void setConcreteIngredients(Set<ConcreteIngredient> concreteIngredients) {
+        this.concreteIngredients = concreteIngredients;
     }
 
-    public void setRecipe(Recipe recipe) {
-        this.getPrimaryKey().setRecipe(recipe);
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Integer getId() {
+        return id;
     }
 
-    @Transient
-    public Food getFood() {
-        return getPrimaryKey().getFood();
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setFood(Food food) {
-        this.getPrimaryKey().setFood(food);
+    @Column(nullable = false, length = 20)
+    public String getName() {
+        return name;
     }
 
-    @Column(name = "quantity", nullable = false)
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -90,24 +68,21 @@ public class Ingredient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Ingredient that = (Ingredient) o;
+        Ingredient ingredient = (Ingredient) o;
 
-        return primaryKey != null
-                ? primaryKey.equals(that.primaryKey)
-                : that.primaryKey == null;
+        return id != null ? id.equals(ingredient.id) : ingredient.id == null;
     }
 
     @Override
     public int hashCode() {
-        return primaryKey != null ? primaryKey.hashCode() : 0;
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override
     public String toString() {
-        return "Ingredient{" +
-                "primaryKey=" + primaryKey.toString() +
-                ", unit=" + unit.toString() +
-                ", quantity=" + quantity +
+        return "Food{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

@@ -64,4 +64,12 @@ public class Image {
     public void setRecipes(Set<Recipe> recipes) {
         this.recipes = recipes;
     }
+
+    public boolean addRecipe(Recipe recipe) {
+        return this.recipes.add(recipe);
+    }
+
+    public boolean removeRecipe(Recipe recipe) {
+        return this.recipes.remove(recipe);
+    }
 }

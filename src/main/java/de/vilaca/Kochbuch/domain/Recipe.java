@@ -67,13 +67,13 @@ public class Recipe {
 
     private Set<MealType> mealTypes = new HashSet<>();
 
-    private Set<Ingredient> ingredients = new HashSet<>();
+    private Set<ConcreteIngredient> concreteIngredients = new HashSet<>();
 
     private Image image;
 
     public Recipe() {};
 
-    public Recipe(String name, Image image, String steps_url, Set<Ingredient> ingredients, Boolean meat, Boolean fish,
+    public Recipe(String name, Image image, String steps_url, Set<ConcreteIngredient> concreteIngredients, Boolean meat, Boolean fish,
                   Boolean vegetarian, Boolean vegan, Integer carbs, Integer protein,
                   Integer calories, Integer portions) {
         this.name = name;
@@ -87,20 +87,21 @@ public class Recipe {
         this.calories = calories;
         this.portions = portions;
         this.image = image;
-        this.ingredients = (ingredients != null) ? ingredients : new HashSet<>();
+        this.concreteIngredients = (concreteIngredients != null) ? concreteIngredients : new HashSet<>();
     }
 
-    public void addIngredient(Ingredient ingredient) {
-        this.ingredients.add(ingredient);
+    public void addIngredient(ConcreteIngredient concreteIngredient) {
+        this.concreteIngredients.add(concreteIngredient);
     }
 
-    public void addIngredients(Collection<Ingredient> ingredients) {
-        this.ingredients.addAll(ingredients);
+    public void addIngredients(Collection<ConcreteIngredient> concreteIngredients) {
+        this.concreteIngredients.addAll(concreteIngredients);
     }
 
-    @OneToMany(mappedBy = "primaryKey.recipe")
-    public Set<Ingredient> getIngredients() {
-        return ingredients;
+    @OneToMany(mappedBy = "primaryKey.recipe",
+            fetch = FetchType.LAZY)
+    public Set<ConcreteIngredient> getIngredients() {
+        return concreteIngredients;
     }
 
     @Id
@@ -204,7 +205,7 @@ public class Recipe {
         this.portions = portions;
     }
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "recipe_meal",
             joinColumns = {@JoinColumn(name = "recipe_id")},
@@ -218,11 +219,12 @@ public class Recipe {
         this.mealTypes = mealTypes;
     }
 
-    public void setIngredients(Set<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+    public void setIngredients(Set<ConcreteIngredient> concreteIngredients) {
+        this.concreteIngredients = concreteIngredients;
     }
 
-    @ManyToOne(targetEntity = Image.class, fetch = FetchType.EAGER)
+    // TODO vorher eager
+    @ManyToOne(targetEntity = Image.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
     public Image getImage() {
         return image;

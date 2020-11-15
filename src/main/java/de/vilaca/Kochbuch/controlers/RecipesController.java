@@ -1,15 +1,11 @@
 package de.vilaca.Kochbuch.controlers;
 
 import de.vilaca.Kochbuch.HibernateConf;
-import de.vilaca.Kochbuch.domain.Food;
-import de.vilaca.Kochbuch.domain.Image;
 import de.vilaca.Kochbuch.domain.Recipe;
 import de.vilaca.Kochbuch.repositories.ImageRepository;
 import de.vilaca.Kochbuch.repositories.RecipeRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class RecipesController {
@@ -33,6 +28,9 @@ public class RecipesController {
 
     private final RecipeRepository recipeRepository;
     private final ImageRepository imageRepository;
+
+    private static final String homePage = "/home";
+    private static final String newRecipePage = "/addRecipe";
 
     public RecipesController(RecipeRepository recipeRepository, ImageRepository imageRepository) {
         this.recipeRepository = recipeRepository;
@@ -75,6 +73,8 @@ public class RecipesController {
 
         model.addAttribute("recipes", recipes);
         model.addAttribute("defaultImage", defaultImage);
+        model.addAttribute("homePage", homePage);
+        model.addAttribute("newRecipePage", newRecipePage);
 
         return "cssandjs/list";
     }

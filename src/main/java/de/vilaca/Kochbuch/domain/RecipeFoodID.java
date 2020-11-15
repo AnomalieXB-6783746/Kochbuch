@@ -8,17 +8,17 @@ public class RecipeFoodID implements Serializable {
 
     private Recipe recipe;
 
-    private Food food;
+    private Ingredient ingredient;
 
     public RecipeFoodID() {
     }
 
-    public RecipeFoodID(Recipe recipe, Food food) {
+    public RecipeFoodID(Recipe recipe, Ingredient ingredient) {
         this.recipe = recipe;
-        this.food = food;
+        this.ingredient = ingredient;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Recipe getRecipe() {
         return recipe;
     }
@@ -27,13 +27,13 @@ public class RecipeFoodID implements Serializable {
         this.recipe = recipe;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    public Food getFood() {
-        return food;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public Ingredient getFood() {
+        return ingredient;
     }
 
-    public void setFood(Food food) {
-        this.food = food;
+    public void setFood(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 
     @Override
@@ -44,13 +44,13 @@ public class RecipeFoodID implements Serializable {
         RecipeFoodID that = (RecipeFoodID) o;
 
         if (recipe != null ? !recipe.equals(that.recipe) : that.recipe != null) return false;
-        return food != null ? food.equals(that.food) : that.food == null;
+        return ingredient != null ? ingredient.equals(that.ingredient) : that.ingredient == null;
     }
 
     @Override
     public int hashCode() {
         int result = recipe != null ? recipe.hashCode() : 0;
-        result = 31 * result + (food != null ? food.hashCode() : 0);
+        result = 31 * result + (ingredient != null ? ingredient.hashCode() : 0);
         return result;
     }
 
@@ -58,7 +58,7 @@ public class RecipeFoodID implements Serializable {
     public String toString() {
         return "RecipeFoodID{" +
                 "recipe=" + recipe.getName() +
-                ", food=" + food.toString() +
+                ", food=" + ingredient.toString() +
                 '}';
     }
 }

@@ -40,7 +40,8 @@ public class MealType {
         this.name = name;
     }
 
-    @ManyToMany(mappedBy = "mealTypes")
+    @ManyToMany(mappedBy = "mealTypes",
+            fetch = FetchType.LAZY)
     public Set<Recipe> getRecipes() {
         return recipes;
     }

@@ -12,7 +12,7 @@ public class Unit {
 
     private String name;
 
-    private Set<Ingredient> ingredients = new HashSet<>();
+    private Set<ConcreteIngredient> concreteIngredients = new HashSet<>();
 
     public Unit() {
     }
@@ -21,26 +21,27 @@ public class Unit {
         this.name = name;
     }
 
-    @OneToMany(/*targetEntity = Ingredient.class,*/
+    @OneToMany(
             mappedBy = "unit",
             cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    public Set<Ingredient> getIngredients() {
-        return ingredients;
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    public Set<ConcreteIngredient> getIngredients() {
+        return concreteIngredients;
     }
 
-    public void setIngredients(Set<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+    public void setIngredients(Set<ConcreteIngredient> concreteIngredients) {
+        this.concreteIngredients = concreteIngredients;
     }
 
-    public void addIngredient(Ingredient ingredient) {
-        ingredients.add(ingredient);
-        ingredient.setUnit(this);
+    public void addIngredient(ConcreteIngredient concreteIngredient) {
+        concreteIngredients.add(concreteIngredient);
+        concreteIngredient.setUnit(this);
     }
 
-    public void removeIngredient(Ingredient ingredient) {
-        ingredients.remove(ingredient);
-        ingredient.setUnit(null);
+    public void removeIngredient(ConcreteIngredient concreteIngredient) {
+        concreteIngredients.remove(concreteIngredient);
+        concreteIngredient.setUnit(null);
     }
 
     @Id
