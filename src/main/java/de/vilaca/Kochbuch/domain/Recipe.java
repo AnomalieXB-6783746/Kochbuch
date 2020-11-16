@@ -1,6 +1,7 @@
 package de.vilaca.Kochbuch.domain;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -71,6 +72,10 @@ public class Recipe {
 
     private Image image;
 
+    private LocalDateTime created;
+
+    private LocalDateTime lastModified;
+
     public Recipe() {};
 
     public Recipe(String name, Image image, String steps_url, Set<ConcreteIngredient> concreteIngredients, Boolean meat, Boolean fish,
@@ -88,6 +93,8 @@ public class Recipe {
         this.portions = portions;
         this.image = image;
         this.concreteIngredients = (concreteIngredients != null) ? concreteIngredients : new HashSet<>();
+        this.created = LocalDateTime.now();
+        this.lastModified = this.created;
     }
 
     public void addIngredient(ConcreteIngredient concreteIngredient) {
@@ -232,5 +239,23 @@ public class Recipe {
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    @Basic(optional = false, fetch = FetchType.LAZY)
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    @Basic(optional = false, fetch = FetchType.LAZY)
+    public LocalDateTime getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(LocalDateTime lastModified) {
+        this.lastModified = lastModified;
     }
 }
