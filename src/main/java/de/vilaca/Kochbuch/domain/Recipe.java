@@ -8,7 +8,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "recipe")
-
 public class Recipe {
 
     private Integer id;
@@ -75,6 +74,8 @@ public class Recipe {
     private LocalDateTime created;
 
     private LocalDateTime lastModified;
+
+    private User creator;
 
     public Recipe() {};
 
@@ -230,7 +231,6 @@ public class Recipe {
         this.concreteIngredients = concreteIngredients;
     }
 
-    // TODO vorher eager
     @ManyToOne(targetEntity = Image.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
     public Image getImage() {
@@ -257,5 +257,15 @@ public class Recipe {
 
     public void setLastModified(LocalDateTime lastModified) {
         this.lastModified = lastModified;
+    }
+
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User user) {
+        this.creator = user;
     }
 }

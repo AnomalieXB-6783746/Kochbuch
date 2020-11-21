@@ -31,10 +31,10 @@ public class BootstrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        saveCeviche();
+        //saveCeviche();
     }
 
-    private void saveCeviche() {
+    /*private void saveCeviche() {
         Image imageCeviche = new Image("Ceviche", "Data/Ceviche.JPG");
         //Set<ConcreteIngredient> concreteIngredients = new HashSet<>();
         Recipe cevice = new Recipe("Cevice", imageCeviche, "", new HashSet<>(),
@@ -60,7 +60,7 @@ public class BootstrapData implements CommandLineRunner {
             unit = unitRepository.save(unit);
 
             //concreteIngredients.add(concreteIngredient);
-            /*cevice.addIngredients(concreteIngredients);*/
+            *//*cevice.addIngredients(concreteIngredients);*//*
             //foodRepository.save(ingredient);
             //ingredientRepository.save(ingredient);
 
@@ -71,5 +71,5 @@ public class BootstrapData implements CommandLineRunner {
                 recipeRepository.save(cevice);
             }
         }
-    }
+    }*/
 }
