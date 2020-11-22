@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "unit")
+@Table(name = "units")
 public class Unit {
 
     private Integer id;

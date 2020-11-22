@@ -7,7 +7,7 @@ import javax.persistence.*;
  * unit of measure and quantity in a specific meal.
  */
 @Entity
-@Table(name = "concreteIngredient")
+@Table(name = "concreteIngredients")
 @AssociationOverrides({
         @AssociationOverride(name = "primaryKey.recipe",
                 joinColumns = @JoinColumn(name = "recipe_id")),

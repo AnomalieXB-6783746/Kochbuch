@@ -2,14 +2,20 @@ package de.vilaca.Kochbuch.bootstrap;
 
 import de.vilaca.Kochbuch.domain.*;
 import de.vilaca.Kochbuch.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Component
 public class BootstrapData implements CommandLineRunner {
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
+    AuthorityRepository authorityRepository;
+    @Autowired
+    UserRepository userRepository;
 
     private final UnitRepository unitRepository;
     private final RecipeRepository recipeRepository;
@@ -32,6 +38,21 @@ public class BootstrapData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         //saveCeviche();
+        addMyUser();
+    }
+
+    private void addMyUser() {
+        if (!userRepository.findUserByUsernameEquals("user").isPresent()
+                || !authorityRepository.findAuthorityByName("ADMIN").isPresent()) {
+            Authority authority = new Authority("ADMIN");
+            User user = new User("user", passwordEncoder.encode("geheim"),
+                    "sample@email.de");
+            user.addAuthority(authority);
+            userRepository.save(user);
+            authority.addUser(user);
+            authorityRepository.save(authority);
+            System.out.println("Benutzer erstellt!!");
+        }
     }
 
     /*private void saveCeviche() {

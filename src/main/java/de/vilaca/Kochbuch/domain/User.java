@@ -1,17 +1,12 @@
 package de.vilaca.Kochbuch.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User {
-
-    public enum Role {
-        ADMIN,
-        USER,
-        DEFAULT
-    }
 
     private long id;
 
@@ -19,7 +14,7 @@ public class User {
 
     private String password;
 
-    private Role role;
+    private Set<Authority> authorities;
 
     private String email;
 
@@ -27,9 +22,22 @@ public class User {
 
     private Set<Recipe> recipes;
 
+    public User(String username, String pWord, String eMail) {
+        this.username = username;
+        this.password = pWord;
+        this.email = eMail;
+        this.authorities = new HashSet<>();
+        this.enabled = true;
+        this.recipes = new HashSet<>();
+    }
+
+    public User() {
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
+    @Column(name = "userId")
     public long getId() {
         return id;
     }
@@ -38,16 +46,16 @@ public class User {
         this.id = id;
     }
 
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(name = "username", length = 50, nullable = false, unique = true)
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
-    @Column(length = 60, nullable = false)
+    @Column(name = "password", length = 60, nullable = false)
     public String getPassword() {
         return password;
     }
@@ -56,16 +64,21 @@ public class User {
         this.password = password;
     }
 
-    @Enumerated(EnumType.STRING)
-    public Role getRole() {
-        return role;
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "users_authorities",
+            joinColumns = {@JoinColumn(name = "userId")},
+            inverseJoinColumns = {@JoinColumn(name = "authId")}
+    )
+    public Set<Authority> getAuthorities() {
+        return this.authorities;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(name = "eMail", length = 50, nullable = false, unique = true)
     public String getEmail() {
         return email;
     }
@@ -74,7 +87,7 @@ public class User {
         this.email = email;
     }
 
-    @Column(nullable = false)
+    @Column(name = "enabled", nullable = false)
     public boolean isEnabled() {
         return enabled;
     }
@@ -84,7 +97,7 @@ public class User {
     }
 
     @OneToMany(targetEntity = Recipe.class,
-            mappedBy = "",
+            mappedBy = "creator",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     public Set<Recipe> getRecipes() {
@@ -93,5 +106,21 @@ public class User {
 
     public void setRecipes(Set<Recipe> recipes) {
         this.recipes = recipes;
+    }
+
+    public void addAuthority(Authority authority) {
+        this.authorities.add(authority);
+    }
+
+    public void removeAuthority(Authority authority) {
+        this.authorities.remove(authority);
+    }
+
+    public void addRecipe(Recipe recipe) {
+        this.recipes.add(recipe);
+    }
+
+    public void removeRecipe(Recipe recipe) {
+        this.recipes.remove(recipe);
     }
 }

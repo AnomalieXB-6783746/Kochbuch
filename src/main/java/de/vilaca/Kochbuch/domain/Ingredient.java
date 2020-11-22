@@ -9,7 +9,7 @@ import java.util.Set;
  * A type of food (a specific food). 
  */
 @Entity
-@Table(name = "ingredient")
+@Table(name = "ingredients")
 public class Ingredient {
 
     private Integer id;
