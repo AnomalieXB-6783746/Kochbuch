@@ -8,11 +8,11 @@ import java.util.Set;
 @Table(name = "units")
 public class Unit {
 
-    private Integer id;
+    private Long id;
 
     private String name;
 
-    private Set<ConcreteIngredient> concreteIngredients = new HashSet<>();
+    /*private Set<ConcreteIngredient> concreteIngredients = new HashSet<>();*/
 
     public Unit() {
     }
@@ -21,7 +21,7 @@ public class Unit {
         this.name = name;
     }
 
-    @OneToMany(
+    /*@OneToMany(
             mappedBy = "unit",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
@@ -42,16 +42,16 @@ public class Unit {
     public void removeIngredient(ConcreteIngredient concreteIngredient) {
         concreteIngredients.remove(concreteIngredient);
         concreteIngredient.setUnit(null);
-    }
+    }*/
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

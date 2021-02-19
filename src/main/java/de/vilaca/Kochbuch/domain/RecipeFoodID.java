@@ -1,5 +1,7 @@
 package de.vilaca.Kochbuch.domain;
 
+import com.fasterxml.jackson.annotation.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -19,6 +21,7 @@ public class RecipeFoodID implements Serializable {
     }
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     public Recipe getRecipe() {
         return recipe;
     }
@@ -28,6 +31,7 @@ public class RecipeFoodID implements Serializable {
     }
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     public Ingredient getFood() {
         return ingredient;
     }

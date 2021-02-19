@@ -1,5 +1,9 @@
 package de.vilaca.Kochbuch.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
@@ -10,13 +14,17 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "ingredients")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Ingredient {
 
-    private Integer id;
+    private Long id;
 
     private String name;
 
-    private Set<ConcreteIngredient> concreteIngredients = new HashSet<ConcreteIngredient>();
+    /*@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Set<ConcreteIngredient> concreteIngredients = new HashSet<ConcreteIngredient>();*/
 
     public Ingredient() {
     }
@@ -25,7 +33,7 @@ public class Ingredient {
         this.name = name;
     }
 
-    public void addConcreteIngredient(ConcreteIngredient concreteIngredient) {
+    /*public void addConcreteIngredient(ConcreteIngredient concreteIngredient) {
         this.concreteIngredients.add(concreteIngredient);
     }
 
@@ -42,19 +50,19 @@ public class Ingredient {
 
     public void setConcreteIngredients(Set<ConcreteIngredient> concreteIngredients) {
         this.concreteIngredients = concreteIngredients;
-    }
+    }*/
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, unique = true)
     public String getName() {
         return name;
     }

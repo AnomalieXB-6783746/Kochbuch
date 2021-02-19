@@ -8,13 +8,13 @@ import java.util.Set;
 @Table(name = "images")
 public class Image {
 
-    private Integer id;
+    private Long id;
 
     private String name;
 
     private String path;
 
-    private Set<Recipe> recipes = new HashSet<>();
+/*    private Set<Recipe> recipes = new HashSet<>();*/
 
     public Image() {
     }
@@ -27,8 +27,12 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "image_id")
-    public Integer getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Column(name = "image_name")
@@ -49,11 +53,7 @@ public class Image {
         this.path = path;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    @OneToMany(targetEntity = Recipe.class,
+    /*@OneToMany(targetEntity = Recipe.class,
             mappedBy = "image",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
@@ -71,5 +71,5 @@ public class Image {
 
     public boolean removeRecipe(Recipe recipe) {
         return this.recipes.remove(recipe);
-    }
+    }*/
 }

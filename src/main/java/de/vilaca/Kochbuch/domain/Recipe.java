@@ -1,5 +1,7 @@
 package de.vilaca.Kochbuch.domain;
 
+import com.fasterxml.jackson.annotation.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -8,9 +10,12 @@ import java.util.Set;
 
 @Entity
 @Table(name = "recipes")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Recipe {
 
-    private Integer id;
+    private Long id;
 
     private String name;
 /*
@@ -67,14 +72,17 @@ public class Recipe {
 
     private Set<MealType> mealTypes = new HashSet<>();
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Set<ConcreteIngredient> concreteIngredients = new HashSet<>();
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Image image;
 
     private LocalDateTime created;
 
     private LocalDateTime lastModified;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User creator;
 
     public Recipe() {};
@@ -108,6 +116,7 @@ public class Recipe {
 
     @OneToMany(mappedBy = "primaryKey.recipe",
             fetch = FetchType.LAZY)
+    @JsonManagedReference
     public Set<ConcreteIngredient> getIngredients() {
         return concreteIngredients;
     }
@@ -115,11 +124,11 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "recipe_id")
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

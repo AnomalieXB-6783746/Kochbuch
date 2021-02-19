@@ -5,10 +5,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "mealTypes")
+@Table(name = "meal_types")
 public class MealType {
 
-    private Integer id;
+    private Long id;
 
     private String name;
 
@@ -23,15 +23,15 @@ public class MealType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, unique = true)
     public String getName() {
         return name;
     }

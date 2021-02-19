@@ -25,7 +25,7 @@ public class Authority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "authId")
+    @Column(name = "auth_id")
     public Long getId() {
         return id;
     }

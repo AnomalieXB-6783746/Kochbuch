@@ -7,4 +7,6 @@ import java.util.Set;
 
 public interface ImageRepository extends CrudRepository<Image, Integer> {
     Set<Image> findByName(String name);
+
+    Image findById(Long id);
 }

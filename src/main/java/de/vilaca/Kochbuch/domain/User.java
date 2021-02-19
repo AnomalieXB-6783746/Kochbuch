@@ -8,7 +8,7 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
 
-    private long id;
+    private Long id;
 
     private String username;
 
@@ -37,12 +37,12 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "userId")
-    public long getId() {
+    @Column(name = "user_id")
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -67,8 +67,8 @@ public class User {
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_authorities",
-            joinColumns = {@JoinColumn(name = "userId")},
-            inverseJoinColumns = {@JoinColumn(name = "authId")}
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "auth_id")}
     )
     public Set<Authority> getAuthorities() {
         return this.authorities;
@@ -78,7 +78,7 @@ public class User {
         this.authorities = authorities;
     }
 
-    @Column(name = "eMail", length = 50, nullable = false, unique = true)
+    @Column(name = "e_mail", length = 50, nullable = false, unique = true)
     public String getEmail() {
         return email;
     }

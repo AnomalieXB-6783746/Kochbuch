@@ -2,10 +2,17 @@ package de.vilaca.Kochbuch.bootstrap;
 
 import de.vilaca.Kochbuch.domain.*;
 import de.vilaca.Kochbuch.repositories.*;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import javax.persistence.EntityManagerFactory;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class BootstrapData implements CommandLineRunner {
@@ -37,8 +44,10 @@ public class BootstrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        //saveCeviche();
-        addMyUser();
+        /*Session session = sessionFactory.openSession();
+        saveCeviche();
+        //addMyUser();
+        session.close();*/
     }
 
     private void addMyUser() {
@@ -57,39 +66,62 @@ public class BootstrapData implements CommandLineRunner {
 
     /*private void saveCeviche() {
         Image imageCeviche = new Image("Ceviche", "Data/Ceviche.JPG");
-        //Set<ConcreteIngredient> concreteIngredients = new HashSet<>();
+        Set<ConcreteIngredient> concreteIngredients = new HashSet<>();
         Recipe cevice = new Recipe("Cevice", imageCeviche, "", new HashSet<>(),
                 Boolean.FALSE, Boolean.TRUE, Boolean.FALSE,
                 Boolean.FALSE, 10, 20, 30, 4);
-        imageCeviche.addRecipe(cevice);
+        //imageCeviche.addRecipe(cevice);
         imageRepository.save(imageCeviche);
         cevice = recipeRepository.save(cevice);
         {
             Unit unit = new Unit("Stück");
-            unit = unitRepository.save(unit);
+
+            if (!unitRepository.findByName(unit.getName()).iterator().hasNext()) {
+                unit = unitRepository.save(unit);
+            } else {
+                unit = unitRepository.findByName(unit.getName()).iterator().next();
+            }
+
             Ingredient ingredient = new Ingredient("Zwiebel (rot)");
-            ingredient = ingredientRepository.save(ingredient);
+
+            if (ingredientRepository.findByName(ingredient.getName()) == null) {
+                ingredient = ingredientRepository.save(ingredient);
+            } else {
+                ingredient = ingredientRepository.findByName(ingredient.getName());
+            }
+
             RecipeFoodID id = new RecipeFoodID(cevice, ingredient);
             ConcreteIngredient concreteIngredient = new ConcreteIngredient(id, unit, 1);
-            concreteIngredient =
-                    concreteIngredientRepository.save(concreteIngredient);
+
+            if (concreteIngredientRepository
+                    .findByPrimaryKey(concreteIngredient.getPrimaryKey()) == null) {
+                concreteIngredient =
+                        concreteIngredientRepository.save(concreteIngredient);
+            }
 
             concreteIngredient.setUnit(unit);
+
             concreteIngredient =
                     concreteIngredientRepository.save(concreteIngredient);
             unit.addIngredient(concreteIngredient);
-            unit = unitRepository.save(unit);
 
-            //concreteIngredients.add(concreteIngredient);
-            *//*cevice.addIngredients(concreteIngredients);*//*
-            //foodRepository.save(ingredient);
-            //ingredientRepository.save(ingredient);
+            if (unitRepository.findByName(unit.getName()) == null) {
+                unit = unitRepository.save(unit);
+            }
+
+            concreteIngredients.add(concreteIngredient);
+            cevice.addIngredients(concreteIngredients);
+            *//*foodRepository.save(ingredient);*//*
+
+            if (ingredientRepository.findByName(ingredient.getName()) == null) {
+                ingredient = ingredientRepository.save(ingredient);
+            }
 
             if (!imageRepository.findByName(imageCeviche.getName()).iterator().hasNext()) {
-                imageRepository.save(imageCeviche);
+                imageCeviche = imageRepository.save(imageCeviche);
             }
             if (!recipeRepository.getByName(cevice.getName()).iterator().hasNext()) {
-                recipeRepository.save(cevice);
+                cevice = recipeRepository.save(cevice);
             }
         }
     }*/

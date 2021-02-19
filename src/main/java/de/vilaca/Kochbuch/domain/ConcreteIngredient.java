@@ -1,5 +1,9 @@
 package de.vilaca.Kochbuch.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 
 /**
@@ -7,20 +11,25 @@ import javax.persistence.*;
  * unit of measure and quantity in a specific meal.
  */
 @Entity
-@Table(name = "concreteIngredients")
+@Table(name = "concrete_ingredients")
 @AssociationOverrides({
         @AssociationOverride(name = "primaryKey.recipe",
                 joinColumns = @JoinColumn(name = "recipe_id")),
         @AssociationOverride(name = "primaryKey.food",
                 joinColumns = @JoinColumn(name = "ingredient_id"))
 })
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "primaryKey")
 public class ConcreteIngredient {
     //composite id key
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private RecipeFoodID primaryKey = new RecipeFoodID();
 
     /**
      * The unit this ingredient is messured in.
      */
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Unit unit;
 
     /**
@@ -38,6 +47,7 @@ public class ConcreteIngredient {
     }
 
     @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name="unit_id")
     public Unit getUnit() {
         return unit;
     }
